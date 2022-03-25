@@ -4,8 +4,13 @@ import { NgModule } from '@angular/core';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '',
     pathMatch: 'full',
+    redirectTo: 'customer-list',
+  },
+  {
+    path: 'customer-list',
+    loadChildren: () =>
+      import('./pages/customer/customer.module').then((m) => m.CustomerModule),
   },
 ];
 

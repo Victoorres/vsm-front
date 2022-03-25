@@ -16,10 +16,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'vsm-gerenciador-clientes'`, () => {
+  it(`should have as title 'vsm-front'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('vsm-gerenciador-clientes');
+    expect(app.title).toEqual('vsm-front');
   });
 
   it('should render title', () => {
@@ -27,7 +27,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.content span').textContent).toContain(
-      'vsm-gerenciador-clientes app is running!'
+      'vsm-front app is running!'
     );
   });
 });
