@@ -83,17 +83,20 @@ function createNewCustomer(id: number): Customer {
     '.';
 
   return {
-    id: id.toString(),
+    id: id,
     name: name,
-    document: Math.round(Math.random() * 100000000000).toString(),
+    document: Math.round(Math.random() * 100000000000),
     email: 'teste.com',
     phone: '62 9 9999-9999',
     address: {
+      userId: id,
       city: 'Goiânia',
       district: 'St Leste Universitário',
-      id: 'JFOIEWHOI242309U2',
       uf: 'GO',
       zipCode: 76450000,
+      complement: '',
+      number: 1,
+      street: 'fw',
     },
   };
 }

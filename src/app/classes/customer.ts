@@ -1,7 +1,7 @@
 import { Address } from './address';
 
 export class Customer {
-  id: string;
+  id: number;
   name: string;
   document: string;
   phone: string;
