@@ -1,8 +1,17 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { fromEvent } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
 import { Customer } from 'src/app/classes/customer';
 import { FormatUtils } from 'src/app/shared/utils/format.util';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
@@ -23,17 +32,25 @@ export class CustomerListComponent implements OnInit {
     'address',
   ];
   customers: Customer[] = [];
+  public filterForm: FormGroup;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('search', { static: false })
+  private searchInput: ElementRef;
 
   constructor(
     private readonly customerService: CustomerService,
+    public readonly builder: FormBuilder,
     private readonly dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.getCustomers();
+
+    this.filterForm = this.builder.group({
+      search: [null],
+    });
   }
 
   public formatDocument(document: string): string {
@@ -55,5 +72,21 @@ export class CustomerListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => this.getCustomers());
+  }
+
+  filterSearch() {
+    const document: string = this.filterForm.get('search').value;
+
+    if (document?.length > 10) {
+      this.customerService
+        .getCustomerByDocument(document)
+        .subscribe((customers) => {
+          this.customers = [];
+          this.customers.push(customers);
+        });
+    }
+    if (document === null || document === '') {
+      this.getCustomers();
+    }
   }
 }
