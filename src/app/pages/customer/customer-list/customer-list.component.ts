@@ -1,38 +1,19 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Customer } from 'src/app/classes/customer';
 import { FormatUtils } from 'src/app/shared/utils/format.util';
+import { CustomerFormComponent } from '../customer-form/customer-form.component';
+import { CustomerService } from '../customer.service';
 
-/** Constants */
-const NAMES: string[] = [
-  'Maia',
-  'Asher',
-  'Olivia',
-  'Atticus',
-  'Amelia',
-  'Jack',
-  'Charlotte',
-  'Theodore',
-  'Isla',
-  'Oliver',
-  'Isabella',
-  'Jasper',
-  'Cora',
-  'Levi',
-  'Violet',
-  'Arthur',
-  'Mia',
-  'Thomas',
-  'Elizabeth',
-];
 @Component({
   selector: 'app-customer-list',
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.css'],
 })
-export class CustomerListComponent {
+export class CustomerListComponent implements OnInit {
   displayedColumns: string[] = [
     'actions',
     'name',
@@ -41,62 +22,38 @@ export class CustomerListComponent {
     'email',
     'address',
   ];
-  dataSource: MatTableDataSource<Customer>;
+  customers: Customer[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor() {
-    // Create 100 customers
-    const customers = Array.from({ length: 50 }, (_, k) =>
-      createNewCustomer(k + 1)
-    );
+  constructor(
+    private readonly customerService: CustomerService,
+    private readonly dialog: MatDialog
+  ) {}
 
-    this.dataSource = new MatTableDataSource(customers);
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  ngOnInit(): void {
+    this.getCustomers();
   }
 
   public formatDocument(document: string): string {
     return FormatUtils.formatDocument(document);
   }
-}
 
-/** Returns a new Customer. */
-function createNewCustomer(id: number): Customer {
-  const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
-    ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) +
-    '.';
+  private getCustomers(): void {
+    this.customerService
+      .getCustomers()
+      .subscribe((customers) => (this.customers = customers));
+  }
 
-  return {
-    id: id,
-    name: name,
-    document: Math.round(Math.random() * 100000000000),
-    email: 'teste.com',
-    phone: '62 9 9999-9999',
-    address: {
-      userId: id,
-      city: 'Goiânia',
-      district: 'St Leste Universitário',
-      uf: 'GO',
-      zipCode: 76450000,
-      complement: '',
-      number: 1,
-      street: 'fw',
-    },
-  };
+  openCustomerForm(document?: string): void {
+    const dialogRef = this.dialog.open(CustomerFormComponent, {
+      width: '550px',
+      data: {
+        document: document,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => this.getCustomers());
+  }
 }

@@ -7,4 +7,5 @@ export class Customer {
   phone: string;
   email: string;
   address: Address;
+  inactive: boolean;
 }

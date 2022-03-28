@@ -1,0 +1,132 @@
+<h1 mat-dialog-title style="text-align: center">
+  <label style="padding-left: 5%">{{ dialogAdd.title }}</label>
+
+  <mat-slide-toggle style="margin-left: 25px" [(ngModel)]="active">
+    {{ active ? "ATIVO" : "INATIVO" }}
+  </mat-slide-toggle>
+</h1>
+
+<form [formGroup]="customerForm">
+  <div class="row">
+    <div class="col-md-8">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome</mat-label>
+        <input matInput required placeholder="Nome" formControlName="name" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="outline">
+        <mat-label>CPF/CNPJ</mat-label>
+        <input
+          matInput
+          required
+          placeholder="CPF/CNPJ"
+          formControlName="document"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Telefone</mat-label>
+        <input
+          matInput
+          required
+          placeholder="Telefone"
+          formControlName="phone"
+        />
+      </mat-form-field>
+    </div>
+    <div class="col-md-8">
+      <mat-form-field appearance="outline">
+        <mat-label>E-Mail</mat-label>
+        <input matInput required placeholder="E-Mail" formControlName="email" />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div formGroupName="address">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="col-md-12">
+          <mat-label>CEP</mat-label>
+          <input
+            required
+            matInput
+            placeholder="CEP"
+            formControlName="zipCode"
+            (blur)="getAddressByZip()"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-8">
+        <mat-form-field appearance="outline" class="col-md-12">
+          <mat-label>Rua</mat-label>
+          <input matInput required placeholder="Rua" formControlName="street" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="col-md-12">
+          <mat-label>Bairro</mat-label>
+          <input
+            matInput
+            required
+            placeholder="Bairro"
+            formControlName="district"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="col-md-12">
+          <mat-label>Complemento</mat-label>
+          <input
+            matInput
+            placeholder="Complemento"
+            formControlName="complement"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="col-md-12">
+          <mat-label>Número</mat-label>
+          <input matInput placeholder="Número" formControlName="number" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="col-md-12">
+          <mat-label>Cidade</mat-label>
+          <input
+            matInput
+            required
+            placeholder="Cidade"
+            formControlName="city"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="col-md-12">
+          <mat-label>Estado</mat-label>
+          <input matInput required placeholder="Estado" formControlName="uf" />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div mat-dialog-actions style="justify-content: space-around">
+  <button type="button" class="btn btn-danger" (click)="cancel()">
+    {{ dialogAdd.option.no }}
+  </button>
+  <button type="button" class="btn btn-success" (click)="save()">
+    {{ dialogAdd.option.yes }}
+  </button>
+</div>

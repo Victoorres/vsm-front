@@ -1,0 +1,21 @@
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: grey !important;
+}
+
+::ng-deep
+  .mat-form-field-appearance-outline.mat-focused
+  .mat-form-field-outline-thick {
+  color: black !important;
+}
+
+::ng-deep .mat-form-field-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: black !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
